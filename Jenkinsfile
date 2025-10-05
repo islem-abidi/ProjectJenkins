@@ -28,7 +28,7 @@ pipeline {
     stage('3 - Maven Compile') {
       steps {
         echo 'Compilation du projet'
-        sh 'mvn -B -DskipTests=true compile'
+        sh 'mvn -B -DskipTests=false compile'
       }
     }
 
