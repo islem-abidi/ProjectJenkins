@@ -28,7 +28,7 @@ pipeline {
     stage('3 - Maven Compile') {
       steps {
         echo 'Compilation du projet'
-        sh 'mvn -B -DskipTests=false compile'
+        sh 'mvn -B -DskipTests=true compile'
       }
     }
 
@@ -44,7 +44,7 @@ pipeline {
     stage('5 - Build & Archive JAR') {
       steps {
         echo 'Construction du package final'
-        sh 'mvn -B -DskipTests=false package'
+        sh 'mvn -B -DskipTests=true package'
         archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
       }
     }
