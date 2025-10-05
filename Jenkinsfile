@@ -2,8 +2,8 @@ pipeline {
   agent any
 
   tools {
-    maven 'Maven4'     
-    jdk 'jdk17'       
+    maven 'Maven 4'     
+    jdk 'JDK17'       
   }
 
   environment {
@@ -14,9 +14,8 @@ pipeline {
 
     stage('1 - Checkout (Git)') {
       steps {
-        
         checkout scm
-              }
+      }
     }
 
     stage('2 - Maven Clean') {
@@ -28,14 +27,14 @@ pipeline {
 
     stage('3 - Maven Compile') {
       steps {
-        echo  'Compilation du projet'
+        echo 'Compilation du projet'
         sh 'mvn -B -DskipTests=true compile'
       }
     }
 
     stage('4 - SonarQube Analysis') {
       steps {
-        echo ' Lancement de l’analyse SonarQube'
+        echo 'Lancement de l’analyse SonarQube'
         withSonarQubeEnv("${SONAR_INSTALL}") {
           sh 'mvn -B sonar:sonar'
         }
@@ -44,7 +43,7 @@ pipeline {
 
     stage('5 - Build & Archive JAR') {
       steps {
-        echo ' Construction du package final'
+        echo 'Construction du package final'
         sh 'mvn -B -DskipTests=false package'
         archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
       }
@@ -52,7 +51,7 @@ pipeline {
 
     stage('Quality Gate') {
       steps {
-        echo ' Vérification du Quality Gate SonarQube...'
+        echo 'Vérification du Quality Gate SonarQube...'
         timeout(time: 15, unit: 'MINUTES') {
           waitForQualityGate abortPipeline: true
         }
@@ -62,10 +61,10 @@ pipeline {
 
   post {
     success {
-      echo ' Pipeline terminé avec succès '
+      echo 'Pipeline terminé avec succès'
     }
     failure {
-      echo ' Échec du pipeline.'
+      echo 'Échec du pipeline.'
     }
   }
 }
