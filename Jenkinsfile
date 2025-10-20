@@ -66,16 +66,19 @@ pipeline {
         }
 
         stage('7 - Push Docker Image') {
-            steps {
-                script {
-                    echo "Connexion à Docker Hub et push..."
-                    withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENTIALS}", usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                        sh "echo $PASS | docker login -u $USER --password-stdin"
-                        sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
-                    }
-                }
+        steps {
+        script {
+            withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                sh '''
+                    echo "Connexion à Docker Hub..."
+                    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                    docker push islemab/restaurant-app:v1
+                '''
             }
         }
+    }
+}
+
 
         stage('8 - Deploy to Minikube') {
             steps {
