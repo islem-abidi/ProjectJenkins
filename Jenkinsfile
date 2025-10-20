@@ -11,6 +11,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = 'dockerhub-id' // ID des credentials Docker Hub dans Jenkins
         IMAGE_NAME = 'islemab/restaurant-app'
         IMAGE_TAG = 'v1'
+        KUBECONFIG = '/var/lib/jenkins/.kube/config' 
     }
 
     stages {
@@ -81,14 +82,15 @@ pipeline {
 
 
         stage('8 - Deploy to Minikube') {
-            steps {
-                echo "Déploiement MySQL et backend sur Minikube..."
-                sh 'kubectl apply -f mysql-secret.yaml'
-                sh 'kubectl apply -f mysql-deployment.yaml'
-                sh 'kubectl apply -f restaurant-app-deployment.yaml'
-                sh 'kubectl apply -f restaurant-app-service.yaml'
-            }
-        }
+    steps {
+        echo "Déploiement MySQL et backend sur Minikube..."
+        sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply -f mysql-secret.yaml'
+        sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply -f mysql-deployment.yaml'
+        sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply -f restaurant-app-deployment.yaml'
+        sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply -f restaurant-app-service.yaml'
+    }
+}
+
     }
 
     post {
