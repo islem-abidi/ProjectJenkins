@@ -83,10 +83,10 @@ pipeline {
         stage('8 - Deploy to Minikube') {
             steps {
                 echo "Déploiement MySQL et backend sur Minikube..."
-                sh 'kubectl apply -f /home/vagrant/mysql-secret.yaml'
-                sh 'kubectl apply -f /home/vagrant/mysql-deployment.yaml'
-                sh 'kubectl apply -f /home/vagrant/restaurant-app-deployment.yaml'
-                sh 'kubectl apply -f /home/vagrant/restaurant-app-service.yaml'
+                sh 'kubectl apply -f mysql-secret.yaml'
+                sh 'kubectl apply -f mysql-deployment.yaml'
+                sh 'kubectl apply -f restaurant-app-deployment.yaml'
+                sh 'kubectl apply -f restaurant-app-service.yaml'
             }
         }
     }
